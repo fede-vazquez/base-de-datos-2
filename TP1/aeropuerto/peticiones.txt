@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS "base"(
+"id" TEXT, "ident" TEXT, "type" TEXT, "name" TEXT,
+ "latitude_deg" TEXT, "longitude_deg" TEXT, "elevation_ft" TEXT, "continent" TEXT,
+ "country_name" TEXT, "iso_country" TEXT, "region_name" TEXT, "iso_region" TEXT,
+ "local_region" TEXT, "municipality" TEXT, "scheduled_service" TEXT, "gps_code" TEXT,
+ "icao_code" TEXT, "iata_code" TEXT, "local_code" TEXT, "home_link" TEXT,
+ "wikipedia_link" TEXT, "keywords" TEXT, "score" TEXT, "last_updated" TEXT);
+
+create table continent (
+    id integer autoincrement primary key not null,
+    name varchar(64) unique
+);

@@ -1,0 +1,181 @@
+TP1 Barrios Populares
+
+Desde un archivo CVS (Comma Separated Values) a un base de datos normalizada.
+
+Requisitos:
+    1. Crear carpeta de trabajo (Desktop/TP1 - Si no existe, crearla)
+    2. Instalar sqlite
+    3. Bajar de la web el archivo CSV
+    4. Consola de Windows  (https://www.xataka.com/basics/comandos-basicos-para-dar-tus-primeros-pasos-consola-windows-cmd)
+
+Instalar sqlite:
+    Descargar desde este link: https://www.sqlite.org/2025/sqlite-tools-win-x64-3490100.zip
+    En la carpeta descargas, estara este archivo: sqlite-tools-win-x64-3490100.zip
+    Sobre este archivo, boton derecho, extraer.
+    Una vez extraido, deberan verse los siguientes archivos:
+        sqldiff.exe
+        sqlite3_analyzer.exe
+        sqlite3.exe
+        sqlite3_rsync.exe
+    Copiar sqlite3.exe a la carpeta creada en el requisito 1.
+
+Bajar de la web el archivo CSV:
+    Usando el navegador (Chrome, Firefox, Edge), descargar este archivo: https://datosabiertos.desarrollosocial.gob.ar/dataset/0d022767-9390-486a-bff4-ba53b85d730e/resource/9a951270-60dd-4f21-aa19-4ef1205620bd/download/20231205_info_publica_datos_barrios.csv
+    En la carpeta de descargas tendremos este archivo: 20231205_info_publica_datos_barrios.csv
+    Lo copiamos a la carpeta creada en el requisito 1.
+
+Consola de Windows:
+    En la barra de tareas de Windows buscamos cmd
+    Abre la consola y muestra un directorio donde estamos parados.
+    El comando DIR (o dir, no es case sensitive), nos muestra que archivos o carpetas hay
+    Hay q moverse a a carpeta creada en el requisito 1.
+    Usando el comando CD (o cd...) nos movemos:
+        cd Desktop
+        cd DB2025
+        cd TP1
+    Vemos q va cambiando el camino (path) en la consola.
+    EL comando DIR deberia mostrarnos los siguientes archivos:
+        sqlite3.exe
+        20231205_info_publica_datos_barrios.csv
+
+Estamos listos para arrancar.
+
+=========================================================================
+==== SQLITE
+=========================================================================
+        
+1. Arrancar sqlite3 y crear la base de datos barrios.db
+    Tipeamos: sqlite3 barrios.db
+    Vemos esto:
+        SQLite version 3.45.1 2024-01-30 16:01:20
+        Enter ".help" for usage hints.
+        sqlite> 
+    Ya podemos importar el archivo CVS a nuestra base de datos barrios.db
+    Ante el prompt sqlite> tipeamos los comandos. 
+    Si despues de cada comando vuelve a aparecer el prompt sqlite> todo anduvo bien.
+    Si muestra algun error, ahi es donde trabajamos y resolvemos.
+
+2. Importar el CSV a la base de datos
+    sqlite> .mode csv
+    Este comando (.mode) es una instruccion a sqlite. No es un comando SQL. 
+    csv nunca q va a venir un archivo con este formato.
+    Si vuelve el prompt, todo esta bien.
+    
+    sqlite3> .import 20231205_info_publica_datos_barrios.csv Base
+    Este comando (.import) importa el archivo csv a la table Base (la crea .import) en la base de datos barrios.db
+    Si vuelve el prompt, todo esta bien.
+    Si muestra algun error, ahi es donde trabajamos y resolvemos.
+    En este punto, tenemos la tabla Base con los datos del archivo  csv.
+
+    Para ver la table, sqlite provee el comando .schema
+    sqlite> .schema
+    Y nos muestra la sentencia CREATE TABLE que se genero para crear la tabla.
+        sqlite> .schema
+        CREATE TABLE IF NOT EXISTS "Base"(
+        "id_renabap" TEXT, "nombre_barrio" TEXT, "provincia" TEXT, "departamento" TEXT,
+         "localidad" TEXT, "cantidad_viviendas_aproximadas" TEXT, "cantidad_familias_aproximada" TEXT, "decada_de_creacion" TEXT,
+         "anio_de_creacion" TEXT, "energia_electrica" TEXT, "efluentes_cloacales" TEXT, "agua_corriente" TEXT,
+         "cocina" TEXT, "calefaccion" TEXT, "titulo_propiedad" TEXT, "clasificacion_barrio" TEXT,
+         "superficie_m2" TEXT);
+
+    CREATE es un DDL!
+    Podemos hacer consultas a la tabla Base (Consulta -> Query -> SELECT)
+    SQL no es case sensitive!
+      
+    Cuantas filas se cargaron?
+    sqlite> select count(*) from Base;
+    6467
+
+    Analisis e lo que hay en la tabla Base:
+    1. Provincias
+    sqlite> select count(distinct provincia) from Base;
+    24
+    Este comando nos muestra cuantos valores distintos de la columna provincia hay en la tabla Base.
+    Ejercicio: Repetir este comando, reemplazando la columna provincia por la siguientes:
+        energia_electrica
+        efluentes_cloacales 
+        agua_corriente
+        cocina
+        calefaccion
+        clasificacion_barrio
+    
+    Creacion de la tabla Provincia:
+    Ante prompt sqlite, tipeamos:
+    sqlite> create table Provincia(id integer not null primary key autoincrement, nombre varchar(64) not null unique);
+
+    Los comandos sql terminan con ; (punto y coma). Tanto los DDL, DML y DCL.
+    Si vuelve el prompt, no hay errores. Si hay errores, arreglarlos. Verificar la sintaxis utilizada!
+
+    Verificamos:
+    sqlite> .schema Provincia
+    CREATE TABLE Provincia(id integer not null primary key autoincrement, nombre varchar(64) not null unique);
+
+    Que tenemos aca?
+    create table Provincia( id...., nombre...)
+    Provincia es la tabla a crear.
+    Entre parentesis, las columnas de la tabla, separadas por coma.
+    Columnas:
+        id integer not null primary key autoincrement:
+            id: Nombre de la columna
+            integer: tipo de dato
+            not null: constraint, no puede quedar vacio
+            primary key: Clave primaria, identifica univocamente cada fila (row) de la tabla
+            autoincrement: No hace falta ponerlo. Se genera automaticamente (y sequencialmente) ante cada fila insertada.
+
+        nombre varchar(64) not null unique: 
+            nombre: Nombre de la columna
+            varchar: tipo de dato
+            (64); maxima longitud admitida
+            not null: constraint, no puede quedar vacio
+            unqiue: Asegura que no haya repetidos
+
+    NOTA: Con la misma estructura de Provincia, tenemos que crear las siguientes tablas:
+        Energia_electrica
+        Efluentes_cloacales 
+        Agua_corriente
+        Cocina
+        Calefaccion
+        Clasificacion_barrio
+
+    Por ejemplo:
+        CREATE TABLE Energia_electrica(id integer not null primary key autoincrement, nombre varchar(64) not null unique);
+
+    Despues de cada ejecucion de un creata table, el comando .schema NombreDelaTabla nos muestra lo que se ejecuto.
+    Ejemplo:
+    sqlite> .schema Provincia
+    CREATE TABLE Provincia(id integer not null primary key autoincrement, nombre varchar(64) not null unique);
+
+    
+    CARGAR LAS TABLAS:
+    Lo siguiente es extraer de la tabla Base los valores que se repiten para las siguientes columnas:
+        energia_electrica
+        efluentes_cloacales 
+        agua_corriente
+        cocina
+        calefaccion
+        clasificacion_barrio
+    y cargar las tablas antes. (las que son todas iguales en estructura (id, nombre) y el id es autoincrement, o sea,
+    solo tenemos q conseguir el valor para el campo nombre y listo.
+
+    Ejemplo:
+    Tabla Provincia: insert into Provincia(nombre) select distinct provincia from Base order by 1;
+    Tabla Energia_electrica: insert into Provincia(nombre) select distinct energia_electrica from Base order by 1;
+    Tabla Efluentes_cloacales: insert into Provincia(nombre) select distinct efluentes_cloacales from Base order by 1;
+    ...
+    y lo mismo para agua_corriente, cocina, calefaccion y clasificacion_barrio.
+    Recordar el distincty el order by 1 para que quede todo ordenado.
+
+
+    Resumen:
+    1ra etapa de la normalizacion cumplida.
+    Hasta aqui, normalizamos valores repetidos en sus respectivas tablas.
+
+    Que sigue? Normalizacion de localidad, departamento y provincia.
+
+
+
+
+            
+
+
+

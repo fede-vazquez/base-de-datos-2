@@ -1,0 +1,124 @@
+TP1 Barrios Populares
+
+Etapa 3. Aca vamos a crear la table final de Barrios utilizando 
+todas las tablas creadas hasta ahora.
+
+======================================================
+== Creacion de la table Barrio
+======================================================
+
+create table Barrio(
+    id integer not null primary key autoincrement,
+    nombre varchar(512) not null,
+    localidad_id integer not null,
+    energia_electrica_id integer not null,
+    efluentes_cloacales_id integer not null,
+    agua_corriente_id integer not null,
+    cocina_id integer not null,
+    calefaccion_id integer not null,
+    clasificacion_barrio_id integer not null,
+    cantidad_viviendas integer not null default 0,
+    cantidad_familias integer not null default 0,
+    anio_creacion integer,
+    decada_creacion integer not null check(decada_creacion > 0),
+    superficie real not null check(superficie >= 0),
+    titulo_propiedad_sn char(1) not null default 'N' check(titulo_propiedad_sn in ('S','N')),
+    foreign key (localidad_id) references Localidad(id),
+    foreign key (energia_electrica_id) references Energia_elctrica(id),
+    foreign key (efluentes_cloacales_id) references Efluentes_cloacales(id),
+    foreign key (agua_corriente_id) references Agua_corriente(id),
+    foreign key (cocina_id) references Cocina(id),
+    foreign key (calefaccion_id) references Calefaccion(id),
+    foreign key (clasificacion_barrio_id) references Calsificacion_barrio(id)
+);
+
+Nuevas constraints:
+    default
+    check
+
+Cuando usamos in(lista de valores separados por coma) estamos validando
+que el valor tratado este en esa lista.
+
+======================================================
+== Carga de datos
+======================================================
+
+insert into Barrio(
+    nombre,
+    localidad_id,
+    energia_electrica_id,
+    efluentes_cloacales_id,
+    agua_corriente_id,
+    cocina_id,
+    calefaccion_id,
+    clasificacion_barrio_id,
+    cantidad_viviendas,
+    cantidad_familias,
+    anio_creacion,
+    decada_creacion,
+    superficie,
+    titulo_propiedad_sn
+)
+select nombre_barrio, l.id, ee.id, ec.id, ac.id, co.id, ca.id, cb.id,
+cast(cantidad_viviendas_aproximadas as integer),
+cast(cantidad_familias_aproximada as integer),
+cast(anio_de_creacion as integer),
+cast(replace(decada_de_creacion,'Década ','') as integer),
+cast(superficie_m2 as real),
+case upper(titulo_propiedad)
+   when 'SI' then 'S'
+   when 'NO' then 'N'
+   else 'N'
+end 
+from base b
+ inner join Energia_electrica ee
+    on ee.nombre = energia_electrica
+ inner join Efluentes_cloacales ec
+    on ec.nombre = b.efluentes_cloacales
+ inner join Agua_corriente ac
+    on ac.nombre = agua_corriente
+ inner join Cocina co
+    on co.nombre = cocina
+ inner join Calefaccion ca
+    on ca.nombre = calefaccion
+ inner join Clasificacion_barrio cb
+    on cb.nombre = b.clasificacion_barrio
+ inner join Localidad l
+    on l.nombre = localidad
+ inner join Departamento  d
+    on d.nombre = departamento
+   and d.id = l.departamento_id
+ inner join Provincia p
+    on p.nombre = provincia
+   and p.id = d.provincia_id;
+
+Use de la clausula CASE: Es como un switch de C# o C++.
+Uso de cast para convertir tipos de datos
+use de replace para reemplazar partes de un string
+
+======================================================
+== View: Es una consulta almacenada
+== https://sqlite.org/lang_createview.html
+======================================================
+
+drop view if exists vBarrios;
+
+create view vBarrios as
+select 
+    p.nombre as provincia, 
+    d.nombre as departamento, 
+    l.nombre as localidad, 
+    b.nombre as barrio, 
+    b.decada_creacion as decada,
+    b.superficie as superficie
+from Barrio b
+inner join Localidad l
+    on b.localidad_id = l.id
+inner join Departamento d
+    on d.id = l.departamento_id
+inner join Provincia p
+    on p.id = d.provincia_id
+order by 1,2,3,4;
+
+
+

@@ -1,0 +1,257 @@
+TP1. Etapa2. Normalizacion de Provincia, Departamento, Localidad.
+
+De la Etapa 1 ya tenemos la tabla Provincia con sus valores.
+Las provincias estan divididas en departamentos (o partidos, aunque no se si
+son lo mismo, para este caso digamos (o sea) que si...).
+
+Como saber cuantos departamentos por provincia tiene la tabla Base?
+
+sqlite> with xbase as (select distinct provincia, departamento from Base order by 1,2)
+   ...> select provincia,count(*) from xbase group by provincia;
+
+provincia                        count(*)
+-------------------------------  --------
+Buenos Aires                     90      
+Catamarca                        9       
+Chaco                            24      
+Chubut                           7       
+Ciudad Autónoma de Buenos Aires  9       
+Corrientes                       23      
+Córdoba                          21      
+Entre Ríos                       15      
+Formosa                          7       
+Jujuy                            11      
+La Pampa                         5       
+La Rioja                         4       
+Mendoza                          17      
+Misiones                         17      
+Neuquén                          10      
+Río Negro                        6       
+Salta                            16      
+San Juan                         17      
+San Luis                         6       
+Santa Cruz                       3       
+Santa Fe                         19      
+Santiago del Estero              19      
+Tierra del Fuego                 3       
+Tucumán                          17   
+
+Nota: para q se vea asi de bonito, antes de ejecutar la consulta que se muestra hice esto:
+sqlite> .headers on
+sqlite> .mode column
+
+La sentencia WITH de SQL usada antes, crea una tabla virtual a la que llame xbase
+y despues la usa para hacer la sumarizacion por provincia.
+Un desafio interesante es pensar un equivalente a esta operacion pero usando C#.
+
+Para ver las opciones de  mode: sqlite> .help mode
+
+
+Ya sabemos entonces cuantos departamentos por provincia deberiamos tener.
+Ahora, a crear la tabla Departamento (o en plural, segun haya elegido cada uno)
+
+create table Departamento ( 
+    id integer not null primary key autoincrement,
+    provincia_id integer not null,
+    nombre varchar(128) not null,
+    foreign key (provincia_id) references Provincia(id));
+
+Despues de crear la tabla, verificamos:
+sqlite> .schema Departamento
+CREATE TABLE Departamento ( 
+    id integer not null primary key autoincrement,
+    provincia_id integer not null,
+    nombre varchar(128) not null,
+    foreign key (provincia_id) references Provincia(id));
+
+La clausula FOREIGN KEY es la que nos protege de poner valores en el campo
+provincia_id que  no esten como ID en la tabla Provincia.
+
+Ademas, tenemos que asegurarnos que la combinacion de provincia_id y nombre no se repitan
+en la tabla Departamento.
+
+Aca no podemos usar la clausula unique como hicimos antes ya que la unicidad involucra mas de una columna.
+La solucion es crear un UNIQUE INDEX sobre estas dos columnas.
+Asi es como creamos un UNIQUE index:
+
+sqlite> create unique index uix_depto on Departamento(provincia_id, nombre);
+
+Verificamos y vemos el indice creado:
+sqlite> .schema Departamento
+CREATE TABLE Departamento ( 
+    id integer not null primary key autoincrement,
+    provincia_id integer not null,
+    nombre varchar(128) not null,
+    foreign key (provincia_id) references Provincia(id));
+CREATE UNIQUE INDEX uix_depto on Departamento(provincia_id, nombre);
+
+
+Estamos listos para insertar los registros en la tabla Departamento.
+Ojo que el valor de provincia_id viene de nuestra nueva tabla Provincia.
+
+
+Es asi:
+insert into Departamento(provincia_id, nombre)
+select distinct p.id, b.departamento
+from Base b
+inner join Provincia p
+    on p.nombre = b.provincia
+order by 1,2;
+
+Verificamos cuantos departamentos por provincia tenemos:
+qlite> select provincia_id, count(*) from Departamento group by provincia_id;
+provincia_id  count(*)
+------------  --------
+1             90      
+2             9       
+3             24      
+4             7       
+5             9       
+6             23      
+7             21      
+8             15      
+9             7       
+10            11      
+11            5       
+12            4       
+13            17      
+14            17      
+15            10      
+16            6       
+17            16      
+18            17      
+19            6       
+20            3       
+21            19      
+22            19      
+23            3       
+24            17 
+
+Y verificamos valores con la consulta que hicimos antes. (La que usa WITH)
+
+Para tener la info completa:
+sqlite> .mode column
+sqlite> select p.nombre, count(*)
+from Departamento d
+inner join Provincia p
+    on p.id = d.provincia_id
+group by p.nombre
+order by 1;
+
+nombre                           count(*)
+-------------------------------  --------
+Buenos Aires                     90      
+Catamarca                        9       
+Chaco                            24      
+Chubut                           7       
+Ciudad Autónoma de Buenos Aires  9       
+Corrientes                       23      
+Córdoba                          21      
+Entre Ríos                       15      
+Formosa                          7       
+Jujuy                            11      
+La Pampa                         5       
+La Rioja                         4       
+Mendoza                          17      
+Misiones                         17      
+Neuquén                          10      
+Río Negro                        6       
+Salta                            16      
+San Juan                         17      
+San Luis                         6       
+Santa Cruz                       3       
+Santa Fe                         19      
+Santiago del Estero              19      
+Tierra del Fuego                 3       
+Tucumán                          17     
+
+Por ahora todo bien. Pasamos a las localidades.
+
+create table Localidad (
+    id integer not null primary key autoincrement,
+    departamento_id integer not null,
+    nombre varchar(256) not null,
+    foreign key (departamento_id) references Departamento(id));
+
+La clausula FOREIGN KEY es la que nos protege de poner valores en el campo
+departamento_id que  no esten como ID en la tabla Departamento.
+
+Check:
+sqlite> .schema Localidad
+CREATE TABLE Localidad (
+    id integer not null primary key autoincrement,
+    departamento_id integer not null,
+    nombre varchar(256) not null,
+    foreign key (departamento_id) references Departamento(id));
+
+Ademas, le creamos el UNIQUE INDEX para cubrirnos que no haya combinaciones
+de departamento_id y nombre repetidos en la tabla Localidad.
+Es decir, localidades repetidas.
+
+sqlite> create unique index uix_localidad on Localidad(departamento_id, nombre);
+
+Para el insert, la cosa se complica un poco mas.
+No vamos a contar localidades por departamento ya que es mucha info.
+Pero vemos cuantos departamentos hay.
+
+sqlite> select count(*) from Departamento;
+count(*)
+--------
+375     
+
+Es lo que tenemos. Ojo que no son los departamentos de todo el pais,
+solo de aquellos que tengan algun barrio popular registrado.
+
+
+sqlite> select distinct d.id, b.localidad
+from Base b
+inner join Departamento d 
+    on d.nombre = b.departamento
+inner join Provincia p
+    on p.id = d.provincia_id
+    and p.nombre = b.provincia
+order by 1,2;
+
+
+Devuelve lo que necesitamos para cargar la tabla localidades.
+
+El insert es muy parecido al de  Departamento, pero para la tabla Localidad.
+
+Ejecutamos:
+sqlite> insert into Localidad(departamento_id, nombre)
+select distinct d.id, b.localidad
+from Base b
+inner join Departamento d 
+    on d.nombre = b.departamento
+inner join Provincia p
+    on p.id = d.provincia_id
+    and p.nombre = b.provincia
+order by 1,2;
+
+
+LA consulta completa:
+
+
+Para exportar el resultado de esta consulta a un csv podemos hacer:
+sqlite> .mode csv
+sqlite> .output Localidades.csv
+sqlite> select p.nombre as PCIA, d.nombre as DEPTO, l.nombre as LOCALIDAD
+from Localidad l
+inner join Departamento d
+    on d.id = l.departamento_id
+inner join Provincia p
+    on p.id = d.provincia_id
+order by 1,2,3;
+sqlite> .output stdout
+
+La ultima es para que la salida vuelva a ser la pantalla.
+En la carpeta donde trabajamos se crear un archivo llamado Localidades.csv q se puede abrir con excel.
+
+
+En la etapa 3 vamos a crear la tabla final Barrio (o Barrios).
+
+Ampliaremos...
+
+
+
+
