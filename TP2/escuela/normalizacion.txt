@@ -1,0 +1,73 @@
+Sector
+
+Jurisdicción > Departamento > Localidad > Domicilio
+
+Ambito
+
+Codigo_de_area
+
+Escuela
+
+create table Jurisdiccion(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null
+)
+
+create table Sector(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null
+)
+
+create table Localidad(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null,
+	codigo_postal int not null,
+	codigo_localidad int not null,
+	departamento_id int not null,
+
+	foreign key (departamento_id) references Departamento(id)
+)
+
+create table Domicilio(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null,
+	localidad_id int not null,
+	
+	foreign key (localidad_id) references Localidad(id)
+)
+
+create table Departamento(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null,
+	jurisdiccion_id int not null,
+	
+	foreign key (jurisdiccion_id) references Jurisdiccion(id)
+)
+
+create table Codigo_de_area(
+	id integer not null primary key autoincrement,
+	codigo int not null
+)
+
+create table Sector(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null
+)
+
+create table Ambito(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null
+)
+
+create table Escuela(
+	id integer not null primary key autoincrement,
+	Nombre varchar(64) not null,
+	CUE_Anexo int not null unique,
+	numero varchar(32) null,
+	mail varchar(64) null,
+
+	codigo_area_id int null,
+	Domicilio_id int not null,
+
+	
+)
