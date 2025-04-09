@@ -1,0 +1,15 @@
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\bin\Debug\net8.0\db1.exe
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\bin\Debug\net8.0\db1.deps.json
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\bin\Debug\net8.0\db1.runtimeconfig.json
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\bin\Debug\net8.0\db1.dll
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\bin\Debug\net8.0\db1.pdb
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.AssemblyInfoInputs.cache
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.AssemblyInfo.cs
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.csproj.CoreCompileInputs.cache
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.sourcelink.json
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.dll
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\refint\db1.dll
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.pdb
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\db1.genruntimeconfig.cache
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP1\conexion_cs\db1\obj\Debug\net8.0\ref\db1.dll
