@@ -99,6 +99,9 @@ select * from municipality;
 
 create table airport (
 	id integer primary key autoincrement not null,
+	name varchar(64) not null,
+	ident varcar(8) not null,
+	type varchar(32) not null,
 	latitude_deg real not null,
 	longitude_deg real not null,
 	elevation_ft integer null,
@@ -117,9 +120,12 @@ create table airport (
 	foreign key (municipality_id) references municipality(id)
 );
 
-insert into airport(latitude_deg, longitude_deg, elevation_ft, gps_code, scheduled_service, icao_code,
+insert into airport(name, ident, type, latitude_deg, longitude_deg, elevation_ft, gps_code, scheduled_service, icao_code,
 	iata_code, local_code, home_link, wikipedia_link, keywords, score, last_updated, municipality_id)
 select
+	b.name,
+	b.ident,
+	b.type,
 	cast(b.latitude_deg as real),
 	cast(b.longitude_deg as real),
 	cast(b.elevation_ft as integer),
@@ -131,20 +137,11 @@ select
 	b.home_link,
 	b.wikipedia_link,
 	b.keywords,
-	CAST(b.score AS integer),
+	cast(b.score AS integer),
 	last_updated,
 	m.id
 FROM base b
 JOIN municipality m ON m.name = b.municipality;
-
-
-
-
-
-
-
-
-
 
 
 

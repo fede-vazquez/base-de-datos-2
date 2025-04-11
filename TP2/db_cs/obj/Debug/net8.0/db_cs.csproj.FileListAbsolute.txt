@@ -1,0 +1,5 @@
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP2\db_cs\obj\Debug\net8.0\db_cs.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP2\db_cs\obj\Debug\net8.0\db_cs.AssemblyInfoInputs.cache
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP2\db_cs\obj\Debug\net8.0\db_cs.AssemblyInfo.cs
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP2\db_cs\obj\Debug\net8.0\db_cs.csproj.CoreCompileInputs.cache
+C:\Users\fvazquez\Desktop\repos\base-de-datos-2\TP2\db_cs\obj\Debug\net8.0\db_cs.sourcelink.json
