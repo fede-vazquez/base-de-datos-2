@@ -13,10 +13,18 @@ create table Jurisdiccion(
 	nombre varchar(64) not null
 )
 
+create table Departamento(
+	id integer not null primary key autoincrement,
+	nombre varchar(64) not null,
+	jurisdiccion_id int not null,
+	
+	foreign key (jurisdiccion_id) references Jurisdiccion(id)
+);
+
 create table Sector(
 	id integer not null primary key autoincrement,
 	nombre varchar(64) not null
-)
+);
 
 create table Localidad(
 	id integer not null primary key autoincrement,
@@ -26,7 +34,7 @@ create table Localidad(
 	departamento_id int not null,
 
 	foreign key (departamento_id) references Departamento(id)
-)
+);
 
 create table Domicilio(
 	id integer not null primary key autoincrement,
@@ -34,40 +42,41 @@ create table Domicilio(
 	localidad_id int not null,
 	
 	foreign key (localidad_id) references Localidad(id)
-)
-
-create table Departamento(
-	id integer not null primary key autoincrement,
-	nombre varchar(64) not null,
-	jurisdiccion_id int not null,
-	
-	foreign key (jurisdiccion_id) references Jurisdiccion(id)
-)
+);
 
 create table Codigo_de_area(
 	id integer not null primary key autoincrement,
 	codigo int not null
-)
+);
 
-create table Sector(
+create table Telefono(
 	id integer not null primary key autoincrement,
-	nombre varchar(64) not null
-)
+	codigo_de_area_id int null,
+	numero_telefono int not null,
+
+	foreign key (codigo_de_area_id) references codigo_de_area(id)
+);
 
 create table Ambito(
 	id integer not null primary key autoincrement,
 	nombre varchar(64) not null
-)
+);
 
 create table Escuela(
 	id integer not null primary key autoincrement,
 	Nombre varchar(64) not null,
 	CUE_Anexo int not null unique,
-	numero varchar(32) null,
 	mail varchar(64) null,
 
 	codigo_area_id int null,
-	Domicilio_id int not null,
-
+	domicilio_id int null,
+	telefono_id int null,
+	sector_id int not null,
+	ambito_id int null,
 	
-)
+	foreign key (codigo_de_area_id) references Codigo_de_area(id),
+	foreign key (domicilio_id) references Domicilio(id),
+	foreign key (telefono_id) references Telefono(id),
+	foreign key (sector_id) references Sector(id),
+	foreign key (ambito_id) references Ambito(id)
+);
