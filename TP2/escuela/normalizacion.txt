@@ -11,7 +11,12 @@ Escuela
 create table Jurisdiccion(
 	id integer not null primary key autoincrement,
 	nombre varchar(64) not null
-)
+);
+
+insert into Jurisdiccion(nombre)
+select distinct "Jurisdicción" from base;
+
+
 
 create table Departamento(
 	id integer not null primary key autoincrement,
@@ -21,62 +26,80 @@ create table Departamento(
 	foreign key (jurisdiccion_id) references Jurisdiccion(id)
 );
 
+insert into Departamento(nombre, jurisdiccion_id)
+select distinct Departamento, j.id
+from base
+	inner join jurisdiccion j
+	on j.nombre = "Jurisdicción";
+
+
 create table Sector(
 	id integer not null primary key autoincrement,
 	nombre varchar(64) not null
 );
 
+insert into sector(nombre)
+select distinct sector from base;
+
 create table Localidad(
 	id integer not null primary key autoincrement,
 	nombre varchar(64) not null,
-	codigo_postal int not null,
+	codigo_postal varchar(32) null,
 	codigo_localidad int not null,
 	departamento_id int not null,
 
 	foreign key (departamento_id) references Departamento(id)
 );
 
-create table Domicilio(
-	id integer not null primary key autoincrement,
-	nombre varchar(64) not null,
-	localidad_id int not null,
-	
-	foreign key (localidad_id) references Localidad(id)
-);
-
-create table Codigo_de_area(
-	id integer not null primary key autoincrement,
-	codigo int not null
-);
-
-create table Telefono(
-	id integer not null primary key autoincrement,
-	codigo_de_area_id int null,
-	numero_telefono int not null,
-
-	foreign key (codigo_de_area_id) references codigo_de_area(id)
-);
+insert into localidad(nombre, codigo_postal, codigo_localidad, departamento_id)
+select distinct localidad, cp, "Código localidad", d.id
+from base
+	inner join departamento d
+	on d.nombre = Departamento;
 
 create table Ambito(
 	id integer not null primary key autoincrement,
 	nombre varchar(64) not null
 );
 
+insert into Ambito(nombre)
+select distinct "Ámbito" from base where "Ámbito" <> '';
+
 create table Escuela(
 	id integer not null primary key autoincrement,
-	Nombre varchar(64) not null,
+	nombre varchar(64) not null,
 	CUE_Anexo int not null unique,
-	mail varchar(64) null,
+	domicilio varchar(32) null,
+	codigo_area varchar(32) null,
+	telefono varchar(32) null,
+	mail varchar(32) null,
 
-	codigo_area_id int null,
-	domicilio_id int null,
-	telefono_id int null,
 	sector_id int not null,
 	ambito_id int null,
-	
-	foreign key (codigo_de_area_id) references Codigo_de_area(id),
-	foreign key (domicilio_id) references Domicilio(id),
-	foreign key (telefono_id) references Telefono(id),
+
 	foreign key (sector_id) references Sector(id),
 	foreign key (ambito_id) references Ambito(id)
 );
+
+
+insert into Escuela(nombre, CUE_Anexo, domicilio, codigo_area, telefono, mail, sector_id, ambito_id)
+select distinct
+	b.Nombre,
+	CAST(b."CUE anexo" as integer),
+	b.Domicilio,
+	"Código de área",
+	"Teléfono",
+	mail,
+	s.id,
+	
+	case
+		when a.id is null then 3
+		else a.id
+	end
+from base b
+	inner join Sector s on b.Sector = s.nombre
+	inner join Ambito a on b."Ámbito" = a.nombre;
+
+
+
+
