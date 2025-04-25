@@ -9,9 +9,13 @@ Asignatura
 - Carga_horaria_total
 - Area_id
 
+Tipo_correlativa
+- Nombre
+
 Correlativas
 - Asignatura_id
 - Correlativa_id
+- Tipo_correlativa_id
 
 Carrera
 - Nombre
