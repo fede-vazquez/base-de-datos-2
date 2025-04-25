@@ -1,0 +1,101 @@
+Create table Institucion(
+	id integer primary key autoincrement not null,
+	nombre varchar(32) not null
+);
+
+
+
+Create table Area(
+	id integer primary key autoincrement not null,
+	nombre varchar(32) not null
+);
+
+
+
+Create table Asignatura(
+	id integer primary key autoincrement not null,
+	nombre varchar(32) not null,
+	carga_horaria_total integer not null,
+
+	area_id integer not null,
+
+	foreign key (area_id) references Area(id)
+);
+
+
+
+Create table Correlativas(
+	asignatura_id integer not null,
+	correlativa_id integer not null,
+	primary key (asignatura_id, correlativa_id)
+
+	foreign key (asignatura_id) references Asignatura(id),
+	foreign key (correlativa_id) references Asignatura(id)
+);
+
+
+
+Create table Carrera(
+	id integer primary key autoincrement not null,
+	nombre varchar(32) not null,
+	institucion_id integer not null,
+
+	foreign key (institucion_id) references Institucion(id)
+);
+
+
+
+Create table Plan_de_estudio(
+	id integer primary key autoincrement not null,
+	nro_ordenanza integer not null,
+	carrera_id integer not null,
+
+	foreign key (carrera_id) references Carrera(id)
+);
+
+
+
+Create table Tipo_regimen(
+	id integer primary key autoincrement not null,
+	nombre varchar(32) not null
+);
+
+
+
+Create table Regimen(
+	id integer primary key autoincrement not null,
+	asignatura_id integer not null,
+	tipo_regimen_id integer not null,
+	nro_regimen integer not null,
+	carga_horaria_semanal integer not null,
+	creditos integer not null,
+
+	foreign key (tipo_regimen_id) references Tipo_regimen(id),
+	foreign key (asignatura_id) references Asignatura(id)
+);
+
+
+
+Create table Regimen_Plan_de_estudio(
+	regimen_id integer not null,
+	plan_de_estudio_id integer not null,
+
+	primary key (regimen_id, plan_de_estudio_id),
+
+	foreign key (regimen_id) references Regimen(id),
+	foreign key (plan_de_estudio_id) references Plan_de_estudio(id)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+

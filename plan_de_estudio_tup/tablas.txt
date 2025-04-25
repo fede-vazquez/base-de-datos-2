@@ -1,0 +1,36 @@
+Institución
+- Nombre
+
+Area
+- Nombre
+
+Asignatura
+- Nombre
+- Carga_horaria_total
+- Area_id
+
+Correlativas
+- Asignatura_id
+- Correlativa_id
+
+Carrera
+- Nombre
+- Institucion_id
+
+Plan_de_estudio
+- Nro_ordenanza
+- Carrera_id
+
+Tipo_regimen
+- Nombre
+
+Regimen
+- Asignatura_id
+- Tipo_regimen_id
+- Nro_regimen
+- Carga_horaria_semanal
+- Creditos
+
+Regimen_Plan_de_estudio
+- Regimen_id
+- Plan_de_estudio_id
