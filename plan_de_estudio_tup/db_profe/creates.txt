@@ -1,0 +1,27 @@
+Create table Persona(
+	id integer not null primary key autoincrement,
+	nro_dni integer not null,
+	nombre varchar(64) not null
+);
+
+Create table Profesor(
+	id integer not null primary key autoincrement,
+	persona_id integer not null,
+	nombre varchar(64) not null,
+
+	foreign key (persona_id) references Persona(id)
+);
+
+Create table Alumno(
+	id integer not null primary key autoincrement,
+	persona_id integer not null,	
+	nro_legajo integer null,
+
+	foreign key (persona_id) references Persona(id)
+);
+
+Create table Evaluacion(
+	id integer not null primary key autoincrement,
+	alumno_id integer not null,
+	foreign key (alumno_id) references Alumno(id)
+);

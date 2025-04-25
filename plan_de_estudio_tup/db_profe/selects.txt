@@ -1,0 +1,18 @@
+select a.id as N, a.nombre as ASIGNATURA, r.nombre as 'RÉGIMEN', a.horassemana as HORAS, a.horascuatrimestre as HORAS, a.creditos as CREDITOS
+from Asignatura a
+	inner join Regimen r
+	on r.id = a.regimen_id;
+
+--Plan
+select p.nombre as Nombre, a.nombre as Asignatura, n.numero as Nivel, c.descripcion as Cuatrimestre, ar.nombre as Area
+from MateriasPlan mp
+	inner join Plan p
+	on p.id = mp.plan_id
+	inner join Asignatura a
+	on a.id = mp.asignatura_id
+	inner join Nivel n
+	on n.id = mp.nivel_id
+	inner join Cuatrimestre c
+	on c.id = mp.cuatrimestre_id
+	inner join Area ar
+	on a.area_id = ar.id;
