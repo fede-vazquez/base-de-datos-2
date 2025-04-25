@@ -23,12 +23,12 @@ Create table Asignatura(
 );
 
 
-Create table Tipo_correlativas(
+Create table Tipo_correlativa(
 	id integer primary key autoincrement not null,
 	nombre varchar(32)
 );
 
-Create table Correlativas(
+Create table Correlativa(
 	asignatura_id integer not null,
 	correlativa_id integer not null,
 	tipo_correlativa_id integer not null,
