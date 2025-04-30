@@ -1,7 +1,8 @@
 Create table Persona(
 	id integer not null primary key autoincrement,
-	nro_dni integer not null,
-	nombre varchar(64) not null
+	apellido varchar(64) not null,
+	nombre varchar(64) not null,
+	dni integer not null unique
 );
 
 Create table Profesor(
@@ -14,7 +15,7 @@ Create table Profesor(
 
 Create table Alumno(
 	id integer not null primary key autoincrement,
-	persona_id integer not null,	
+	persona_id integer not null,
 	nro_legajo integer null,
 
 	foreign key (persona_id) references Persona(id)
