@@ -8,8 +8,8 @@ BEGIN
     SELECT 
         UPPER(c.name), 
         CASE y.name
-            WHEN 'VARCHAR' then 'VARCHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
-            WHEN 'CHAR' then 'CHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
+            WHEN 'VARCHAR' then 'VARCHAR(' + RTRIM(LTRIM(STR(c.MAX_LENGTH))) + ')'
+            WHEN 'CHAR' then 'CHAR(' + RTRIM(LTRIM(STR(c.MAX_LENGTH))) + ')'
             ELSE UPPER(y.name)
         END,
         i.is_primary_key
