@@ -1,0 +1,19 @@
+IF OBJECT_ID('geninsert', 'P') IS NOT NULL
+BEGIN
+DROP PROCEDURE geninsert;
+END;
+
+IF OBJECT_ID('gendelete', 'P') IS NOT NULL
+BEGIN
+DROP PROCEDURE gendelete;
+END;
+
+IF OBJECT_ID('genupdate', 'P') IS NOT NULL
+BEGIN
+DROP PROCEDURE genupdate;
+END;
+
+IF OBJECT_ID('GetErrorInfo_sp', 'P') IS NOT NULL
+BEGIN
+DROP PROCEDURE GetErrorInfo_sp;
+END;

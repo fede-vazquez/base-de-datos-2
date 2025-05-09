@@ -1,0 +1,9 @@
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i GetErrorInfo.sql 
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i GenInsert.sql 
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i GenUpdate.sql 
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i GenDelete.sql 
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i GenDrops.sql  > sqlcmddropall.sql
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i GenAll.sql  > sqlcmdcreateall.sql
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i sqlcmddropall.sql
+sqlcmd -U sa -P Soler225 -S localhost -d Plan2024 -C -i sqlcmdcreateall.sql
+
