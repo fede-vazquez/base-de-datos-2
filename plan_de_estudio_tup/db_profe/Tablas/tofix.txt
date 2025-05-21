@@ -1,1 +1,0 @@
-EN la tabla MateriasPlan falta un unique index por los 4 campos!

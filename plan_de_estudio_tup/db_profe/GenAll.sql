@@ -5,12 +5,9 @@ Begin
 	fetch ctab into @t
 	while @@fetch_status = 0
 	Begin
-		EXEC GenInsert @t 
-		print 'GO'
-		EXEC GenUpdate @t
-		print 'GO'
-		EXEC GenDelete @t
-		print 'GO'
+		EXEC GenCreateInsert @t 
+		EXEC GenCreateUpdate @t
+		EXEC GenCreateDelete @t
 		fetch ctab into @t
 	END
 	close ctab

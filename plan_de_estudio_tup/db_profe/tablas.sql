@@ -72,14 +72,22 @@ create table MateriasPlan(
 	Foreign Key(nivel_id) references Nivel(id),
 	Foreign Key(cuatrimestre_id) references Cuatrimestre(id));
 
+create unique index uix_materiasplan on MateriasPlan(
+	plan_id, asignatura_id, nivel_id, cuatrimestre_id
+);
+
 create table Correlativas(
 	id integer not null primary key identity(1,1),
 	asignatura_id integer not null,
 	correlativa_id integer not null,
+	tipo_correlativa char(1) not null 
+	check (tipo_correlativa in ('A','C')),
 	foreign key (asignatura_id) references Asignatura(id),
-	foreign key (correlativa_id) references Asignatura(id));
-	
-create unique index uix_correlativas on Correlativas(asignatura_id, correlativa_id);
+	foreign key (correlativa_id) references Asignatura(id),
+	check (asignatura_id != correlativa_id));
+
+create unique index uix_correlativas on 
+Correlativas(asignatura_id, correlativa_id);
 
 create table Persona (
 	id integer not null primary key identity(1,1),
@@ -103,9 +111,15 @@ create table Evaluacion(
 	id integer not null primary key identity(1,1),
 	tipoevaluacion_id integer not null,
 	materiaplan_id integer not null,
+	alumno_id integer not null,
 	fecha datetime not null,
-	aprobada_sn char(1) not null check (aprobada_sn in ('S','N'),
-	calificacion float);
+	aprobada_sn char(1) not null check (aprobada_sn in ('S','N')),
+	promovida_sn char(1) not null check (promovida_sn in ('S','N')),
+	calificacion float,
+	foreign key (tipoevaluacion_id) references TipoEvaluacion(id),
+	foreign key (materiaplan_id) references MateriasPlan(id),
+	foreign key (alumno_id) references Alumno(id));
+
 
 create table Profesor(
 	id integer not null primary key identity(1,1),
@@ -114,5 +128,4 @@ create table Profesor(
 	legajo integer not null,
 	foreign key (persona_id) references Persona(id),
 	foreign key (materiaplan_id) references MateriasPlan(id));
-
 
