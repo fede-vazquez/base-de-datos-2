@@ -1,17 +1,21 @@
 create table Institucion (
 	id integer not null primary key identity(1,1), 
 	nombre  varchar(256) not null unique,
-	domicilio varchar(256));
+	domicilio varchar(256)
+);
+GO
 
 create table TipoCarrera(
 	id integer not null primary key identity(1,1), 
 	nombre varchar(128)not null unique
 );
+GO
 
 create table ModalidadCarrera(
 	id integer not null primary key identity(1,1), 
 	nombre varchar(128)not null unique
 );
+GO
 
 create table Carrera (
 	id integer not null primary key identity(1,1), 
@@ -22,15 +26,21 @@ create table Carrera (
 	duracion integer not null,
 	foreign key (institucion_id) references  Institucion(id),
 	foreign key (tipocarrera_id) references  TipoCarrera(id),
-	foreign key (modalidadcarrera_id) references  ModalidadCarrera(id));
+	foreign key (modalidadcarrera_id) references  ModalidadCarrera(id)
+);
+GO
 
 create table Regimen (
 	id integer not null primary key identity(1,1), 
-	nombre  varchar(256) not null unique);
+	nombre  varchar(256) not null unique
+);
+GO
 
 create table Area (
 	id integer not null primary key identity(1,1), 
-	nombre  varchar(256) not null unique);
+	nombre  varchar(256) not null unique
+);
+GO
 
 create table PlanEstudio (
 	id integer not null primary key identity(1,1), 
@@ -38,17 +48,23 @@ create table PlanEstudio (
 	carrera_id integer not null,
 	fecha_inicio datetime not null,
 	fecha_fin datetime,
-	foreign key (carrera_id) references Carrera(id));
+	foreign key (carrera_id) references Carrera(id)
+);
+GO
 
 create table Cuatrimestre (
 	id integer not null primary key identity(1,1), 
 	numero integer not null check (numero >= 0),
-	descripcion varchar(128) not null);
+	descripcion varchar(128) not null
+);
+GO
 
 create table Nivel (
 	id integer not null primary key identity(1,1), 
 	numero integer not null check (numero >= 0),
-	descripcion varchar(128) not null);
+	descripcion varchar(128) not null
+);
+GO
 
 create table Asignatura(
 	id integer not null primary key identity(1,1), 
@@ -59,7 +75,9 @@ create table Asignatura(
 	horascuatrimestre integer not null,
 	creditos integer not null,
 	foreign key (area_id) references Area(id),
-	foreign key (regimen_id) references Regimen(id));
+	foreign key (regimen_id) references Regimen(id)
+);
+GO
 
 create table MateriasPlan(
 	id integer not null primary key identity(1,1),
@@ -70,7 +88,9 @@ create table MateriasPlan(
 	Foreign Key(plan_id) references PlanEstudio(id),
 	Foreign Key(asignatura_id) references Asignatura(id),
 	Foreign Key(nivel_id) references Nivel(id),
-	Foreign Key(cuatrimestre_id) references Cuatrimestre(id));
+	Foreign Key(cuatrimestre_id) references Cuatrimestre(id)
+);
+GO
 
 create unique index uix_materiasplan on MateriasPlan(
 	plan_id, asignatura_id, nivel_id, cuatrimestre_id
@@ -84,16 +104,22 @@ create table Correlativas(
 	check (tipo_correlativa in ('A','C')),
 	foreign key (asignatura_id) references Asignatura(id),
 	foreign key (correlativa_id) references Asignatura(id),
-	check (asignatura_id != correlativa_id));
+	check (asignatura_id != correlativa_id)
+);
+GO
 
 create unique index uix_correlativas on 
 Correlativas(asignatura_id, correlativa_id);
+GO
+
 
 create table Persona (
 	id integer not null primary key identity(1,1),
 	apellido varchar(64) not null,
 	nombre varchar(64) not null,
-	dni integer not null unique);
+	dni integer not null unique
+);
+GO
 
 create table Alumno(
 	id integer not null primary key identity(1,1),
@@ -101,11 +127,15 @@ create table Alumno(
 	planestudio_id integer not null,
 	legajo integer not null,
 	foreign key (persona_id) references Persona(id),
-	foreign key (planestudio_id) references PlanEstudio(id));
+	foreign key (planestudio_id) references PlanEstudio(id)
+);
+GO
 
 create table TipoEvaluacion(
 	id integer not null primary key identity(1,1),
-	nombre varchar(128) not null unique);
+	nombre varchar(128) not null unique
+);
+GO
 
 create table Evaluacion(
 	id integer not null primary key identity(1,1),
@@ -118,8 +148,9 @@ create table Evaluacion(
 	calificacion float,
 	foreign key (tipoevaluacion_id) references TipoEvaluacion(id),
 	foreign key (materiaplan_id) references MateriasPlan(id),
-	foreign key (alumno_id) references Alumno(id));
-
+	foreign key (alumno_id) references Alumno(id)
+);
+GO
 
 create table Profesor(
 	id integer not null primary key identity(1,1),
@@ -127,5 +158,24 @@ create table Profesor(
 	materiaplan_id integer not null,
 	legajo integer not null,
 	foreign key (persona_id) references Persona(id),
-	foreign key (materiaplan_id) references MateriasPlan(id));
+	foreign key (materiaplan_id) references MateriasPlan(id)
+);
+GO
 
+create table HistoricoEvaluacion(
+	id integer not null primary key identity(1,1),
+	tipoevaluacion_id integer not null,
+	materiaplan_id integer not null,
+	alumno_id integer not null,
+	fecha datetime not null,
+	aprobada_sn char(1) not null check (aprobada_sn in ('S','N')),
+	promovida_sn char(1) not null check (promovida_sn in ('S','N')),
+	calificacion float,
+	usuario varchar(128) not null default suser_name(),
+	fecha_operacion date not null default getDate(),
+	operacion char(1) not null check (operacion in ('I','U','D')),
+	foreign key (tipoevaluacion_id) references TipoEvaluacion(id),
+	foreign key (materiaplan_id) references MateriasPlan(id),
+	foreign key (alumno_id) references Alumno(id)
+);
+GO

@@ -41,3 +41,7 @@ GO
 :r .\views\vPromedios.sql
 GO
 :r .\obtenerEstadoAcademico.sql
+
+-- Creaciòn de triggers.
+
+:r .\triggers\trgHistoEvaluacion.sql
