@@ -19,19 +19,7 @@ inner join Persona p
 left join Evaluacion e 
 	on e.alumno_id = a.id 
 	and e.materiaplan_id = mp.id;
-
--- Empaquetar este select en un stored prosedure
-select * from vEstadoAcademico
-where DNI = 42574577;
 GO
-
-CREATE PROCEDURE obtenerEstadoAcademico
-	@DNI INTEGER
-AS
-select * from vEstadoAcademico
-where DNI = @DNI;
-
-EXEC obtenerEstadoAcademico 42574577;
 
 -- Un caso de uso:
 -- select * from vEstadoAcademico

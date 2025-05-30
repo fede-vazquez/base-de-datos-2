@@ -12,9 +12,6 @@ inner join Persona p
 	on p.id = a.persona_id 
 group by p.apellido, p.nombre, p.dni;
 
-select * from vPromedios
-where DNI = 42574577;
-
 -- Dos casos de uso
 -- select * from vPromedios
 -- where dni in (select top 10 dni from Persona)

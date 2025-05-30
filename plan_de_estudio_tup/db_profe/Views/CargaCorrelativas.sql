@@ -1,13 +1,58 @@
-Begin
+-- Cambié el código porque el anterior no estaba completo.
 DECLARE @ID INT;
 
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 5, @CORRELATIVA_ID = 1, @TIPO_CORRELATIVA = 'C'; -- Prog II ← Prog I
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 9, @CORRELATIVA_ID = 5, @TIPO_CORRELATIVA = 'A'; -- Prog III ← Prog II
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 13, @CORRELATIVA_ID = 9, @TIPO_CORRELATIVA = 'A'; -- Prog IV ← Prog III
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 7, @CORRELATIVA_ID = 5, @TIPO_CORRELATIVA = 'C'; -- BD I ← Prog II
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 10, @CORRELATIVA_ID = 7, @TIPO_CORRELATIVA = 'A'; -- BD II ← BD I
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 11, @CORRELATIVA_ID = 5, @TIPO_CORRELATIVA = 'C'; -- Metodología I ← Prog II
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 14, @CORRELATIVA_ID = 11, @TIPO_CORRELATIVA = 'A'; -- Metodología II ← Metodología I
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 15, @CORRELATIVA_ID = 6, @TIPO_CORRELATIVA = 'C'; -- Análisis de datos ← Probabilidad
-EXEC dbo.I_Correlativas @ID OUTPUT, @ASIGNATURA_ID = 17, @CORRELATIVA_ID = 13, @TIPO_CORRELATIVA = 'A'; -- Gestión ← Prog IV
-End
+-- 5
+EXEC I_Correlativas @ID OUTPUT, 5, 1, 'C';
+EXEC I_Correlativas @ID OUTPUT, 5, 2, 'C';
+
+-- 6
+EXEC I_Correlativas @ID OUTPUT, 6, 3, 'C';
+
+-- 7
+EXEC I_Correlativas @ID OUTPUT, 7, 1, 'C';
+EXEC I_Correlativas @ID OUTPUT, 7, 3, 'C';
+
+-- 9
+EXEC I_Correlativas @ID OUTPUT, 9, 5, 'C';
+EXEC I_Correlativas @ID OUTPUT, 9, 7, 'C';
+EXEC I_Correlativas @ID OUTPUT, 9, 1, 'A';
+
+-- 10
+EXEC I_Correlativas @ID OUTPUT, 10, 7, 'C';
+EXEC I_Correlativas @ID OUTPUT, 10, 1, 'A';
+
+-- 11
+EXEC I_Correlativas @ID OUTPUT, 11, 5, 'C';
+EXEC I_Correlativas @ID OUTPUT, 11, 7, 'C';
+EXEC I_Correlativas @ID OUTPUT, 11, 1, 'A';
+EXEC I_Correlativas @ID OUTPUT, 11, 4, 'A';
+
+-- 12
+EXEC I_Correlativas @ID OUTPUT, 12, 8, 'C';
+
+-- 13
+EXEC I_Correlativas @ID OUTPUT, 13, 9, 'C';
+EXEC I_Correlativas @ID OUTPUT, 13, 10, 'C';
+EXEC I_Correlativas @ID OUTPUT, 13, 11, 'C';
+EXEC I_Correlativas @ID OUTPUT, 13, 5, 'A';
+EXEC I_Correlativas @ID OUTPUT, 13, 7, 'A';
+
+-- 14
+EXEC I_Correlativas @ID OUTPUT, 14, 11, 'C';
+EXEC I_Correlativas @ID OUTPUT, 14, 4, 'A';
+
+-- 15
+EXEC I_Correlativas @ID OUTPUT, 15, 10, 'C';
+EXEC I_Correlativas @ID OUTPUT, 15, 6, 'A';
+EXEC I_Correlativas @ID OUTPUT, 15, 7, 'A';
+
+-- 16
+EXEC I_Correlativas @ID OUTPUT, 16, 7, 'C';
+EXEC I_Correlativas @ID OUTPUT, 16, 4, 'A';
+
+-- 17
+EXEC I_Correlativas @ID OUTPUT, 17, 9, 'C';
+EXEC I_Correlativas @ID OUTPUT, 17, 10, 'C';
+EXEC I_Correlativas @ID OUTPUT, 17, 5, 'A';
+EXEC I_Correlativas @ID OUTPUT, 17, 7, 'A';
+GO
