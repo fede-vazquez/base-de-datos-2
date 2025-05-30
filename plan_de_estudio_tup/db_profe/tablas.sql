@@ -1,7 +1,3 @@
-drop database if exists plan_2024;
-create database plan_2024
-
-use plan_2024;
 create table Institucion (
 	id integer not null primary key identity(1,1), 
 	nombre  varchar(256) not null unique,
