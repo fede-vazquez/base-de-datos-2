@@ -4,7 +4,7 @@
 --	los id de las evaluaciones que tenemos que cambiar.
 --	Todo por el número de dni
 
-select e.id, a.nombre, e.calificacion from Evaluacion e
+select e.id, a.nombre, e.calificacion, promovida_sn as promovida from Evaluacion e
 	inner join Alumno al
 	on al.id = alumno_id
 	inner join Persona p

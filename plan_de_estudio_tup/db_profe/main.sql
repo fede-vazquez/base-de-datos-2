@@ -42,8 +42,12 @@ GO
 GO
 :r .\views\vPromedios.sql
 GO
-:r .\obtenerEstadoAcademico.sql
 
--- Creaciòn de triggers.
+-- Creación de procedures propios.
+:r .\stored-procedures\obtenerEstadoAcademico.sql
+:r .\stored-procedures\obtenerPromedio.sql
+GO
+
+-- Creación de triggers.
 
 :r .\triggers\trgHistoEvaluacion.sql

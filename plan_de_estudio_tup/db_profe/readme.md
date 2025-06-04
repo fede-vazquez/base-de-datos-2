@@ -19,13 +19,13 @@ Cuando nos aseguremos que estamos en dicha ruta, además de tener el conectado e
 ### Para windows Authentication
 
 ```bash
-sqlcmd -S serverName -d plan_2024 -E -i main sql -f 65001
+sqlcmd -S serverName -d plan_2024 -E -i main.sql -f 65001
 ```
 
 ### Para SQL Server Authentication
 
 ```bash
-sqlcmd -S serverName -d plan_2024 -U usuario -P contraseña -i main sql -f 65001
+sqlcmd -S serverName -d plan_2024 -U usuario -P contraseña -i main.sql -f 65001
 ```
 
 En ambos casos **es obligatorio cambiar el "serverName"** por el nombre del servidor
