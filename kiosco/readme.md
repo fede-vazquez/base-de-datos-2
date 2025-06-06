@@ -1,0 +1,1 @@
+sqlcmd -S TSP217\SQLEXPRESS01 -d plan_2024 -U UserCreator -P UserCreator -i main.sql -f 65001
