@@ -1,0 +1,3 @@
+-- Crear un stored procedure para que, cuando le pasamos una cabeceraTicket
+-- muestra cada item y actualiza el stock del mismo.
+-- También calcúla el precio final del producto.
